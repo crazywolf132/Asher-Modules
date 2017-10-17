@@ -2,9 +2,9 @@
 
 #This is name of the module - it can be anything you want
 moduleName = "shopping-list"
-swapWords = "add | to | what's on | whats on | remove | from"
+swapWords = "add | remove | delete | on | show | email | send"
 #These are the words you must say for this module to be executed
-commandWords = "$x | $x | the shopping list"
+commandWords = "$x | the shopping list"
 
 shopping_list = []
 
@@ -12,6 +12,7 @@ shopping_list = []
 def execute(command):
     final_list = ''
     _string = ''
+    command = command.lower().strip()
     tokens = str(command).split(' ')
     # Getting first and third words in the hopes the user says something like this...
     # Eg. 'Add watermelon to the shopping list'
@@ -19,19 +20,22 @@ def execute(command):
     # And we get those words...
     _string = '{0} {1}'.format(tokens[0], tokens[2])
 
-    if _string == 'add to':
-        # We are adding to the shopping list now...
-        # We are going to hope that the second word is the item.
-        shopping_list.append(tokens[1])
-        return 'Added.'
-    elif _string == 'remove from':
-        # We are now removing from the shopping list...
-        # We are going to hope that the second word is the item.
-        del shopping_list[int(shopping_list.index(str(tokens[1])))]
-        return 'Removed.'
-    elif _string == "what's on" or _string == 'whats on':
-        # We are now going to read the items on the shopping list.
-        for item in shopping_list:
-            final_list += '{0}\n'.format(item)
-            
-        return final_list
+    for word in tokens:
+        if word == 'add':
+            shopping_list.append(str(tokens[int(tokens.index(str(word))) + 1]))
+            return 'Added.'
+        elif word == 'remove' or word == 'delete':
+            del shopping_list[int(tokens.index(str(word))) + 2]
+            return '{0}d.'.format(word[0].upper() + word[1:])
+        elif word == 'on' or word == 'show':
+            for item in shopping_list:
+                if final_list == '':
+                    final_list = '{0}'.format(item)
+                else:
+                    final_list += ', {0}'.format(item)
+
+            return final_list
+        elif word == 'email' or word == 'send':
+            # Going to assume the next word after this is 'to'... so the name
+            # will be 2 places after this word.
+            print("")
