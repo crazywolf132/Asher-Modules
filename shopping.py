@@ -57,7 +57,6 @@ def execute(command):
             getUsers()
             for item in names:
                 if tokens[int(tokens.index(str(word))) + 1] == str(item):
-                    print('We found who to send it to: ' + str(item))
                     for prod in shopping_list:
                         if final_list == '':
                             final_list = '{0}'.format(prod)
@@ -91,7 +90,6 @@ def getUsers():
     del holdLines[0]
     # In the user file, every 5 lines is a user... (the full user details.)
     _counter = 1
-    #print(holdLines)
     _len = len(holdLines) - 1
     while _counter <= (_len / 5):
         _counter += 1
@@ -135,6 +133,3 @@ def sendOn(_toSay, _email):
         server.quit()
     except:
         pass
-
-
-execute('send list to me')
